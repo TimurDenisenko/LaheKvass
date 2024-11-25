@@ -8,7 +8,8 @@ namespace LaheKvass
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
-            filters.Add(new UserState());
+            if (System.Diagnostics.Debugger.IsAttached)
+                filters.Add(new UserState());
         }
     }
 }

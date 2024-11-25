@@ -113,6 +113,11 @@ namespace LaheKvass.Controllers
             return View(await db.DrinkModels.ToListAsync());
         }
 
+        public void AddToCart(int id)
+        {
+
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

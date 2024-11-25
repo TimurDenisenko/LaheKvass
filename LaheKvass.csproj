@@ -136,6 +136,7 @@
     <Compile Include="Models\DB\DBContext.cs" />
     <Compile Include="Models\DB\DBInitializer.cs" />
     <Compile Include="Models\DrinkModel.cs" />
+    <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\UserState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
