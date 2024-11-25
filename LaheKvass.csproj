@@ -134,6 +134,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModel.cs" />
+    <Compile Include="Models\DbSetExtension.cs" />
     <Compile Include="Models\DB\DBContext.cs" />
     <Compile Include="Models\DB\DBInitializer.cs" />
     <Compile Include="Models\DrinkModel.cs" />
