@@ -199,6 +199,7 @@
     <Content Include="Views\Drink\Details.cshtml" />
     <Content Include="Views\Drink\Edit.cshtml" />
     <Content Include="Views\Drink\Index.cshtml" />
+    <Content Include="Views\Drink\Store.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -21,6 +21,8 @@ namespace LaheKvass.Models
             AccountModel currentUser = GetCurrentUser();
             return $"{currentUser.FirstName} {currentUser.LastName}";
         }
+        public static bool IsAdmin() =>
+            GetCurrentUser().Role.Equals("Admin");
         public static AccountModel GetCurrentUser() =>
             HttpContext.Current.Cache["currentUser"] as AccountModel;
         public static void SetCurrentUser(AccountModel user) =>
@@ -31,7 +33,6 @@ namespace LaheKvass.Models
             HttpContext.Current.Cache.Insert("authorized", isAuth);
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            AccountModel currentUser = GetCurrentUser();
             if (!IsAuthorized()
                 && filterContext.ActionDescriptor.ActionName != "Register"
                 && filterContext.ActionDescriptor.ActionName != "Login")
@@ -39,9 +40,10 @@ namespace LaheKvass.Models
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Account", action = "Register" }));
                 return;
             }
+            AccountModel currentUser = GetCurrentUser();
             if (currentUser != null && currentUser.Role != null && _requiredRole != null && currentUser.Role != _requiredRole)
             {
-                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Drink", action = "Index" }));
+                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Drink", action = "Store" }));
                 return;
             }
         }

@@ -108,6 +108,11 @@ namespace LaheKvass.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<ActionResult> Store()
+        {
+            return View(await db.DrinkModels.ToListAsync());
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

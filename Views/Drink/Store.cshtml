@@ -1,0 +1,18 @@
+﻿@model IEnumerable<LaheKvass.Models.DrinkModel>
+
+@{
+    ViewBag.Title = "Store";
+}
+
+<h2>Store</h2>
+
+@foreach (LaheKvass.Models.DrinkModel item in Model) {
+    <div>
+        <p>
+            @Html.DisplayFor(modelItem => item.DrinkName)
+        </p>
+        <p>
+            @Html.DisplayFor(modelItem => item.Price)
+        </p>
+    </div>
+}

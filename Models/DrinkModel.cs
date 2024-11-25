@@ -15,10 +15,9 @@ namespace LaheKvass.Models
         [RegularExpression(@"^(Kvass|Õlu)$", ErrorMessage = "Vale tüüp")]
         [Required(ErrorMessage = "Sisesta tüüp")]
         public string Type { get; set; }
-        [RegularExpression(@"[A-Za-z0-9,.\-'\s]+", ErrorMessage = "Vale kirjeldus")]
+        [RegularExpression(@"[A-Za-z0-9,.%!?\-'\s]+", ErrorMessage = "Vale kirjeldus")]
         [Required(ErrorMessage = "Sisesta kirjeldus")]
         public string Description { get; set; }
-        [RegularExpression(@"\d{1,3}(?:,\d{3})*(?:\.\d+)?|\d+\.\d+", ErrorMessage = "Vale hind")]
         [Required(ErrorMessage = "Sisesta hind")]
         public double Price { get; set; }
     }

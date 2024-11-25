@@ -17,8 +17,12 @@
         }
         else
         {
-
-            <a href="@Url.Action("Details", "Account", @LaheKvass.Models.UserState.GetCurrentUser().Id)">Tere, @LaheKvass.Models.UserState.GetFullName()!</a>
+            if (LaheKvass.Models.UserState.IsAdmin())
+            {
+                <a href="@Url.Action("Index", "Account")">Kasutajate haldamine</a>
+                <a href="@Url.Action("Index", "Drink")">Jookide juhtimine</a>
+            }
+            <a href="@Url.Action("Details", "Account", new { id = @LaheKvass.Models.UserState.GetCurrentUser().Id })">Tere, @LaheKvass.Models.UserState.GetFullName()!</a>
             <a href="@Url.Action("Logout", "Account")">Logi välja</a>
         }
     </nav>
