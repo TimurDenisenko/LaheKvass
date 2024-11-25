@@ -149,7 +149,7 @@ namespace LaheKvass.Controllers
                 {
                     UserState.IsAuthorized(true);   
                     UserState.SetCurrentUser(reAcc);
-                    return RedirectToAction("Introduction", "Book");
+                    return RedirectToAction("Index", "Drink");
                 }
             }
             catch { }
@@ -160,7 +160,7 @@ namespace LaheKvass.Controllers
         {
             UserState.IsAuthorized(false);
             UserState.SetCurrentUser(null);
-            return RedirectToAction("Introduction", "Book");
+            return RedirectToAction("Index", "Drink");
         }
 
         protected override void Dispose(bool disposing)

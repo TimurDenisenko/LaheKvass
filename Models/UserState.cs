@@ -41,7 +41,7 @@ namespace LaheKvass.Models
             }
             if (currentUser != null && currentUser.Role != null && _requiredRole != null && currentUser.Role != _requiredRole)
             {
-                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Home", action = "Index" }));
+                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Drink", action = "Index" }));
                 return;
             }
         }
