@@ -24,5 +24,7 @@ namespace LaheKvass.Models.DB
                 SaveChanges();
             }
         }
+
+        public System.Data.Entity.DbSet<LaheKvass.Models.OrderModel> OrderModels { get; set; }
     }
 }
