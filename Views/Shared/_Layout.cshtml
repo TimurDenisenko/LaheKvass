@@ -18,6 +18,7 @@
         else
         {
             <a href="@Url.Action("Store", "Drink")">Kodu</a>
+            <a href="@Url.Action("Cart", "Order")">Ostukorv</a>
             if (LaheKvass.Models.UserState.IsAdmin())
             {
                 <a href="@Url.Action("Index", "Account")">Kasutajate haldamine</a>
