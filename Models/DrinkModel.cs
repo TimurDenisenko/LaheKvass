@@ -1,14 +1,15 @@
 ﻿
+using LaheKvass.Models.DB;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LaheKvass.Models
 {
     [Table("Drinks")]
-    public class DrinkModel
+    public class DrinkModel : DBModel
     {
         [Key]
-        public int Id { get; set; }
+        public new int Id { get; set; }
         [RegularExpression(@"^[A-Z][a-zA-Z]*(\s[A-Z][a-zA-Z]*)*$", ErrorMessage = "Vale joogi nimi")]
         [Required(ErrorMessage = "Sisesta joogi nimi")]
         public string DrinkName { get; set; }

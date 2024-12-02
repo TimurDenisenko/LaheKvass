@@ -1,13 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LaheKvass.Models.DB;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LaheKvass.Models
 {
     [Table("Accounts")]
-    public class AccountModel
+    public class AccountModel : DBModel
     {
         [Key]
-        public int Id { get; set; }
+        public new int Id { get; set; }
 
         [RegularExpression(@"^[A-Z][a-zA-Z]*(\s[A-Z][a-zA-Z]*)*$", ErrorMessage = "Vale nimi")]
         [Required(ErrorMessage = "Sisesta nimi")]

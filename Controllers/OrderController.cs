@@ -4,6 +4,9 @@ using System.Net;
 using System.Web.Mvc;
 using LaheKvass.Models;
 using LaheKvass.Models.DB;
+using System.Collections.Generic;
+using System;
+using System.Linq;
 
 namespace LaheKvass.Controllers
 {
@@ -11,10 +14,48 @@ namespace LaheKvass.Controllers
     {
         private DBContext db = new DBContext();
 
+        private Dictionary<int, Tuple<AccountModel, DrinkModel>> orders = new Dictionary<int, Tuple<AccountModel, DrinkModel>>();
+        public static Tuple<SelectList, SelectList> onlyOrders;
+
+        private async Task UpdateOrders()
+        {
+            foreach (OrderModel order in db.OrderModels)
+            {
+                orders.Add(order.Id, Tuple.Create(await db.AccountModels.ElementAtWithTrack(order.AccountId), await db.DrinkModels.ElementAtWithTrack(order.DrinkId)));
+            }
+        }
+        private void UpdateOnlyOrders() => 
+            onlyOrders = Tuple.Create(
+                new SelectList(
+                    db.AccountModels
+                        .ToList()
+                        .Select(a => new SelectListItem
+                        {
+                            Value = a.Id.ToString(),
+                            Text = $"{a.FirstName} {a.LastName}"
+                        }),
+                    "Value",
+                    "Text"
+                ),
+                new SelectList(
+                    db.DrinkModels
+                        .ToList()
+                        .Select(a => new SelectListItem
+                        {
+                            Value = a.Id.ToString(),
+                            Text = $"{a.Type} | {a.DrinkName}"
+                        }),
+                    "Value",
+                    "Text"
+                )
+            );
+
+
         // GET: Order
         public async Task<ActionResult> Index()
         {
-            return View(await db.OrderModels.ToListAsync());
+            await UpdateOrders();
+            return View(orders);
         }
 
         // GET: Order/Details/5
@@ -35,6 +76,7 @@ namespace LaheKvass.Controllers
         // GET: Order/Create
         public ActionResult Create()
         {
+            UpdateOnlyOrders();
             return View();
         }
 
@@ -43,6 +85,7 @@ namespace LaheKvass.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,AccountId,DrinkId")] OrderModel orderModel)
         {
+            UpdateOnlyOrders();
             if (ModelState.IsValid)
             {
                 db.OrderModels.Add(orderModel);
@@ -56,6 +99,7 @@ namespace LaheKvass.Controllers
         // GET: Order/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
+            UpdateOnlyOrders();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -73,6 +117,7 @@ namespace LaheKvass.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,AccountId,DrinkId")] OrderModel orderModel)
         {
+            UpdateOnlyOrders();
             if (ModelState.IsValid)
             {
                 db.Entry(orderModel).State = EntityState.Modified;
