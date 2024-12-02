@@ -83,14 +83,8 @@
                                 if (status["state"] === "completed") {
                                     alert("Payment complete!");
                                     clearInterval(intervalId);
-                                    fetch(`Order/ClearCart`, {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json'
-                                        },
-                                        body: JSON.stringify({})
-                                    });
-                                    location.reload();
+                                    fetch(`ClearCart`)
+                                    .then(res => location.reload());
                                 }
                                 else if (status["state"] === "failed") {
                                     alert("Payment failed!");
