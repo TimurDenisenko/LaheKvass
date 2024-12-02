@@ -6,7 +6,8 @@ using System.Web.Routing;
 namespace LaheKvass.Models
 {
     public class UserState : ActionFilterAttribute
-    {
+    {   
+
         private string _requiredRole;
         public UserState()
         {
@@ -21,6 +22,7 @@ namespace LaheKvass.Models
             AccountModel currentUser = GetCurrentUser();
             return $"{currentUser.FirstName} {currentUser.LastName}";
         }
+
         public static bool IsAdmin() =>
             GetCurrentUser().Role.Equals("Admin");
         public static AccountModel GetCurrentUser() =>

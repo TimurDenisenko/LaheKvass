@@ -7,34 +7,60 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-
-        @if (!LaheKvass.Models.UserState.IsAuthorized())
-        {
-            <a href="@Url.Action("Login", "Account")">Logi sisse</a>
-            <a href="@Url.Action("Register", "Account")">Registreerimine</a>
-        }
-        else
-        {
-            <a href="@Url.Action("Store", "Drink")">Kodu</a>
-            if (LaheKvass.Models.UserState.IsAdmin())
-            {
-                <a href="@Url.Action("Index", "Account")">Kasutajate haldamine</a>
-                <a href="@Url.Action("Index", "Drink")">Jookide haldamine</a>
-                <a href="@Url.Action("Index", "Order")">Tellimuste haldamine</a>
-            }
-            <a href="@Url.Action("Details", "Account", new { id = @LaheKvass.Models.UserState.GetCurrentUser().Id })">Tere, @LaheKvass.Models.UserState.GetFullName()!</a>
-            <a href="@Url.Action("Logout", "Account")">Logi välja</a>
-        }
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">LaheKvass</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    @if (!LaheKvass.Models.UserState.IsAuthorized())
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link px-3 py-2 rounded-3 hover:bg-primary" href="@Url.Action("Login", "Account")">Logi sisse</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3 py-2 rounded-3 hover:bg-primary" href="@Url.Action("Register", "Account")">Registreerimine</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link px-3 py-2 rounded-3 hover:bg-primary" href="@Url.Action("Store", "Drink")">Kodu</a>
+                        </li>
+                        if (LaheKvass.Models.UserState.IsAdmin())
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link px-3 py-2 rounded-3 hover:bg-primary" href="@Url.Action("Index", "Account")">Kasutajate haldamine</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link px-3 py-2 rounded-3 hover:bg-primary" href="@Url.Action("Index", "Drink")">Jookide haldamine</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link px-3 py-2 rounded-3 hover:bg-primary" href="@Url.Action("Index", "Order")">Tellimuste haldamine</a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link px-3 py-2 rounded-3 hover:bg-primary" href="@Url.Action("Details", "Account", new { id = @LaheKvass.Models.UserState.GetCurrentUser().Id })">Tere, @LaheKvass.Models.UserState.GetFullName()!</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3 py-2 rounded-3 hover:bg-primary" href="@Url.Action("Logout", "Account")">Logi välja</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
     </nav>
-    <div class="container body-content">
+
+    <div class="container flex-grow-1">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
     </div>
+
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        <p>&copy; @DateTime.Now.Year - LaheKvass</p>
+    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

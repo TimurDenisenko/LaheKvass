@@ -18,7 +18,7 @@ namespace LaheKvass.Models
         [Required(ErrorMessage = "Sisesta perekonnanimi")]
         public string LastName { get; set; }
 
-        [RegularExpression(@"^(Male|Female|Other|Non-Binary)$", ErrorMessage = "Vale sugu")]
+        [RegularExpression(@"^(Mees|Naine|Muud|Mitte-binaarne)$", ErrorMessage = "Vale sugu")]
         [Required(ErrorMessage = "Sisesta sugu")]
         public string Gender { get; set; }
 
