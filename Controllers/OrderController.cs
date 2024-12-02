@@ -182,11 +182,18 @@ namespace LaheKvass.Controllers
             return RedirectToAction("Cart", await userCart());
         }
 
-        public async Task<ActionResult> DeleteFromCart(int drinkId)
+        public async Task<JsonResult> DeleteFromCart(int drinkId)
         {
-            db.OrderModels.Remove(await db.OrderModels.FirstOrDefaultAsync(x => x.DrinkId == drinkId));
-            await db.SaveChangesAsync();
-            return RedirectToAction("Cart", await userCart());
+            var order = await db.OrderModels.FirstOrDefaultAsync(x => x.DrinkId == drinkId);
+
+            if (order != null)
+            {
+                db.OrderModels.Remove(order);
+                await db.SaveChangesAsync();
+                return Json(new { success = true });
+            }
+
+            return Json(new { success = false });
         }
         protected override void Dispose(bool disposing)
         {

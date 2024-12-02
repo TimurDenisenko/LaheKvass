@@ -52,6 +52,16 @@
                 alert('Failed to remove drink from cart.');
             }
         });
+        fetch('/Drink/AddToCart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: drinkId,
+            })
+        })
+
     }
 
     document.getElementById('proceed-payment').addEventListener('click', function () {
