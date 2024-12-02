@@ -1,5 +1,4 @@
-﻿using System.Data.Entity.Infrastructure;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace LaheKvass.Models.DB
