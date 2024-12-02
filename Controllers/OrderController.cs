@@ -96,37 +96,6 @@ namespace LaheKvass.Controllers
             return View(orderModel);
         }
 
-        // GET: Order/Edit/5
-        public async Task<ActionResult> Edit(int? id)
-        {
-            UpdateOnlyOrders();
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            OrderModel orderModel = await db.OrderModels.FindAsync(id);
-            if (orderModel == null)
-            {
-                return HttpNotFound();
-            }
-            return View(orderModel);
-        }
-
-        // POST: Order/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,AccountId,DrinkId")] OrderModel orderModel)
-        {
-            UpdateOnlyOrders();
-            if (ModelState.IsValid)
-            {
-                db.Entry(orderModel).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            return View(orderModel);
-        }
-
         // GET: Order/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
