@@ -1,0 +1,59 @@
+﻿@model Tuple<LaheKvass.Models.DrinkModel[], double>
+
+@{
+    ViewBag.Title = "Cart";
+}
+
+<h2>Ostukorv</h2>
+
+<div class="cart-items">
+    @foreach (var item in Model.Item1)
+    {
+        <div class="cart-item" data-id="@item.Id">
+            <p>
+                @Html.DisplayFor(modelItem => item.DrinkName)
+            </p>
+            <p>
+                @Html.DisplayFor(modelItem => item.Price) €
+            </p>
+            <button class="delete-btn" data-id="@item.Id">Remove</button>
+        </div>
+    }
+</div>
+
+<div class="total">
+    <p>Total: @Model.Item2 €</p>
+</div>
+
+<button id="proceed-payment">Proceed to Payment</button>
+
+<script>
+    document.addEventListener('click', function (event) {
+        const deleteBtn = event.target.closest('.delete-btn');
+        if (deleteBtn) {
+            const drinkId = deleteBtn.dataset.id;
+            deleteFromCart(drinkId);
+        }
+    });
+
+    function deleteFromCart(drinkId) {
+        fetch(`/Order/DeleteFromCart/${drinkId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Drink removed from cart!');
+                location.reload(); 
+            } else {
+                alert('Failed to remove drink from cart.');
+            }
+        });
+    }
+
+    document.getElementById('proceed-payment').addEventListener('click', function () {
+        window.location.href = '/Order/MakePayment';
+    });</script>

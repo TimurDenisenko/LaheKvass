@@ -104,6 +104,7 @@ namespace LaheKvass.Controllers
         {
             DrinkModel drinkModel = await db.DrinkModels.FindAsync(id);
             db.DrinkModels.Remove(drinkModel);
+            await OrderController.Cleaning(db, true, id);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
@@ -113,9 +114,11 @@ namespace LaheKvass.Controllers
             return View(await db.DrinkModels.ToListAsync());
         }
 
-        public void AddToCart(int id)
+        public async Task<ActionResult> AddToCart(int id)
         {
-
+            db.OrderModels.Add(new OrderModel {DrinkId = id, AccountId = UserState.GetCurrentUser().Id });
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
