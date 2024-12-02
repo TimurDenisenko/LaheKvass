@@ -42,28 +42,70 @@
             headers: {
                 'Content-Type': 'application/json'
             },
+            body: JSON.stringify({
+                id: drinkId,
+            })
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 alert('Drink removed from cart!');
-                location.reload(); 
+                location.reload();
             } else {
                 alert('Failed to remove drink from cart.');
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred.');
         });
-        fetch('/Drink/AddToCart', {
+    }
+
+    document.getElementById('proceed-payment').addEventListener('click', function () {
+        fetch(`MakePayment`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                id: drinkId,
-            })
+            body: JSON.stringify({})
         })
+            .then(res => {
+                if (!res.ok) throw new Error("Payment initiation failed");
+                return res.json(); 
+            })
+            .then(data => {
+                if (data.success) {
+                    window.open(data.paymentLink); 
+                    const intervalId = setInterval(() => {
+                        fetch(data.paymentLink) 
+                            .then(res => res.json())
+                            .then(status => {
+                                if (status["state"] === "completed") {
+                                    alert("Payment complete!");
+                                    clearInterval(intervalId);
+                                    fetch(`Order/ClearCart`, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({})
+                                    });
+                                    location.reload();
+                                }
+                                else if (status["state"] === "failed") {
+                                    alert("Payment failed!");
+                                    clearInterval(intervalId);
+                                }
+                            })
+                            .catch(err => {
+                                return;
+                            });
+                    }, 3000);
+                } else {
+                    alert(data.message || "Payment initiation failed");
+                }
+            })
+            .catch(err => alert(err.message));
+    });
 
-    }
-
-    document.getElementById('proceed-payment').addEventListener('click', function () {
-        window.location.href = '/Order/MakePayment';
-    });</script>
+</script>

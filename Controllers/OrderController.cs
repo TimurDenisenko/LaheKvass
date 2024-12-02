@@ -11,6 +11,7 @@ using System.Net.Http.Headers;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace LaheKvass.Controllers
 {
@@ -130,6 +131,7 @@ namespace LaheKvass.Controllers
         }
 
         // GET: Order/Cart
+        [HttpGet]
         public async Task<ActionResult> Cart()
         {
             return View(Tuple.Create(await userCart(), await userCartSum()));
@@ -147,12 +149,12 @@ namespace LaheKvass.Controllers
             return drinks.Sum(x => x.Price);
         }
 
-        public async Task<string> MakePayment()
+        public async Task<JsonResult> MakePayment()
         {
             double amount = await userCartSum();
             if (amount == 0)
-                return "Cart is empty";
-            string json = JsonSerializer.Serialize(new
+                return Json(new { success = false, message = "Cart is empty" });
+            string json = System.Text.Json.JsonSerializer.Serialize(new
             {
                 api_username = "e36eb40f5ec87fa2",
                 account_name = "EUR3D1",
@@ -166,13 +168,12 @@ namespace LaheKvass.Controllers
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", "ZTM2ZWI0MGY1ZWM4N2ZhMjo3YjkxYTNiOWUxYjc0NTI0YzJlOWZjMjgyZjhhYzhjZA==");
             HttpResponseMessage response = await client.PostAsync("https://igw-demo.every-pay.com/api/v4/payments/oneoff", new StringContent(json, Encoding.UTF8, "application/json"));
-
             if (!response.IsSuccessStatusCode)
-                return "Payment failed";
+                return Json(new { success = false, message = "Payment initiation failed" });
             string responseContent = await response.Content.ReadAsStringAsync();
             JsonDocument jsonDoc = JsonDocument.Parse(responseContent);
             JsonElement paymentLink = jsonDoc.RootElement.GetProperty("payment_link");
-            return paymentLink.ToString();
+            return Json(new { success = true, paymentLink = paymentLink.ToString() });
         }
 
         public async Task<ActionResult> ClearCart()
@@ -182,14 +183,18 @@ namespace LaheKvass.Controllers
             return RedirectToAction("Cart", await userCart());
         }
 
-        public async Task<JsonResult> DeleteFromCart(int drinkId)
+        [HttpPost]
+        public JsonResult DeleteFromCart()
         {
-            var order = await db.OrderModels.FirstOrDefaultAsync(x => x.DrinkId == drinkId);
-
+            var reader = new System.IO.StreamReader(Request.InputStream);
+            var json = reader.ReadToEnd();
+            dynamic data = JsonConvert.DeserializeObject(json);
+            int drinkId = data?.id;
+            var order = db.OrderModels.FirstOrDefault(x => x.DrinkId == drinkId);
             if (order != null)
             {
                 db.OrderModels.Remove(order);
-                await db.SaveChangesAsync();
+                db.SaveChanges();
                 return Json(new { success = true });
             }
 
