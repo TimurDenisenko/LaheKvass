@@ -49,7 +49,10 @@ namespace LaheKvass.Controllers
                     "Text"
                 )
             );
-
+        public static async Task Cleaning(DBContext db, bool isAccount, int deletedId)
+        {
+            db.OrderModels.Remove(await db.OrderModels.FirstOrDefaultAsync(x => isAccount ? x.AccountId == deletedId : x.DrinkId == deletedId));
+        }
 
         // GET: Order
         public async Task<ActionResult> Index()

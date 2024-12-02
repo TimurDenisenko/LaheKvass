@@ -106,6 +106,7 @@ namespace LaheKvass.Controllers
         {
             AccountModel accountModel = await db.AccountModels.FindAsync(id);
             db.AccountModels.Remove(accountModel);
+            await OrderController.Cleaning(db, true, id);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }

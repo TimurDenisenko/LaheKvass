@@ -104,6 +104,7 @@ namespace LaheKvass.Controllers
         {
             DrinkModel drinkModel = await db.DrinkModels.FindAsync(id);
             db.DrinkModels.Remove(drinkModel);
+            await OrderController.Cleaning(db, true, id);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
