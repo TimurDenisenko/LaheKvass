@@ -6,36 +6,88 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .body-content {
+            flex: 1;
+        }
+
+        footer {
+            background-color: #343a40;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .navbar-nav .nav-item {
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-
-        @if (!LaheKvass.Models.UserState.IsAuthorized())
-        {
-            <a href="@Url.Action("Login", "Account")">Logi sisse</a>
-            <a href="@Url.Action("Register", "Account")">Registreerimine</a>
-        }
-        else
-        {
-            <a href="@Url.Action("Store", "Drink")">Kodu</a>
-            <a href="@Url.Action("Cart", "Order")">Ostukorv</a>
-            if (LaheKvass.Models.UserState.IsAdmin())
-            {
-                <a href="@Url.Action("Index", "Account")">Kasutajate haldamine</a>
-                <a href="@Url.Action("Index", "Drink")">Jookide haldamine</a>
-                <a href="@Url.Action("Index", "Order")">Tellimuste haldamine</a>
-            }
-            <a href="@Url.Action("Details", "Account", new { id = @LaheKvass.Models.UserState.GetCurrentUser().Id })">Tere, @LaheKvass.Models.UserState.GetFullName()!</a>
-            <a href="@Url.Action("Logout", "Account")">Logi välja</a>
-        }
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="@Url.Action("Store", "Drink")">LaheKvass</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    @if (!LaheKvass.Models.UserState.IsAuthorized())
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Login", "Account")">Logi sisse</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Register", "Account")">Registreerimine</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Store", "Drink")">Kodu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Cart", "Order")">Ostukorv</a>
+                        </li>
+                        if (LaheKvass.Models.UserState.IsAdmin())
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index", "Account")">Kasutajate haldamine</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index", "Drink")">Jookide haldamine</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index", "Order")">Tellimuste haldamine</a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Details", "Account", new { id = LaheKvass.Models.UserState.GetCurrentUser().Id })">
+                                Tere, @LaheKvass.Models.UserState.GetFullName()!
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Logout", "Account")">Logi välja</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
     </nav>
+
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
     </div>
+
+    <footer>
+        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
